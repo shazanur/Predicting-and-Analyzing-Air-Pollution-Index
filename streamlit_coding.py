@@ -266,8 +266,10 @@ if menu == "Model Development":
 
     st.markdown("""
     <div class="comment-box">
-    This plot compares actual vs predicted API values. 
-    Points closer to the diagonal line indicate better model performance.
+    This plot compares actual vs predicted API values.\n
+    Points sit exactly on the diagonal line --> Overfit\n
+    Points closer to the diagonal line but have some spread --> Well-fit\n
+    Points loosely scattered and dont follow the diagonal line --> Underfit\n
     </div>
     """, unsafe_allow_html=True)
 
@@ -310,10 +312,9 @@ if menu == "Model Evaluation and Comparison":
 
     results_df = pd.DataFrame(results)
     st.success("✅ Model evaluation completed")
-    numeric_cols = results_df.select_dtypes(include="number").columns
-    st.dataframe(results_df.style.format("{:.4f}", subset=numeric_cols))
-
-
+    num_cols = results_df.select_dtypes(include=[np.number]).columns
+    st.dataframe(results_df.style.format("{:.4f}", subset=num_cols))
+   
     # --------------------------------------------------
     # INTERACTIVE METRIC SELECTION
     # --------------------------------------------------
@@ -531,7 +532,7 @@ if menu == "Best Model & Prediction":
     # DISPLAY RESULT
     # --------------------------------------------------
     st.markdown(f"""
-    <div style="background-color:{colour}; padding:20px; border-radius:12px; color:black;">
+    <div style="background-color:{colour}; padding:20px; border-radius:12px; color:white;">
         <h2>Predicted API Value: {prediction:.4f}</h2>
         <h3>Air Quality Status: {status}</h3>
         <p>{advice}</p>
